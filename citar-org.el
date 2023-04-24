@@ -286,11 +286,16 @@ With optional argument FORCE, force the creation of a new ID."
       ;; This just overrides other template insertion.
       (erase-buffer)
       (citar-org-roam-make-preamble key)
-      (insert "#+title: ")
+      ;; (insert "#+title: ")
+      ;; If the file already exists don't do anything
+      (unless (file-exists-p (buffer-file-name))
+        ;; If the property already exists don't try to add it again
+        (unless (org-find-property "ROAM")
+	      (org-roam-add-property "t" "ROAM")))
       (when template (insert note-meta))
-      (insert "\n\n|\n\n#+print_bibliography:")
-      (search-backward "|")
-      (delete-char 1)
+      ;; (insert "\n\n|\n\n#+print_bibliography:")
+      ;; (search-backward "|")
+      ;; (delete-char 1)
       (when (fboundp 'evil-insert)
         (evil-insert 1)))))
 
